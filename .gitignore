@@ -1,0 +1,44 @@
+.DS_Store
+node_modules
+package-lock.json
+/dist
+/wwwroot
+*.zip
+*.7z
+dist*
+
+# sqlite dbs
+*.db
+*.db-shm
+*.db-wal
+
+appsettings.Development.json
+appsettings.*.json
+
+# local env files
+.env.local
+.env.*.local
+cypress.env.json
+
+# log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# local Netlify folder
+.netlify
+/back/src/Reporting/Bhub.Reporting.Api/appsettings.Development.json
+/back/src/Sage/Bhub.Sage.Api/appsettings.Development.json
+/back/src/HF/Bhub.HF.Server/appsettings.Development.json
+/back/src/Bhub.Gateway/appsettings.Development.json
+/back/src/Bhub.Api/appsettings.Development.json
