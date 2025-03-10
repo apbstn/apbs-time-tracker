@@ -7,6 +7,7 @@ package-lock.json
 *.7z
 dist*
 */bin
+/obj
 
 # sqlite dbs
 *.db
