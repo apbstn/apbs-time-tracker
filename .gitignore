@@ -8,6 +8,7 @@ package-lock.json
 dist*
 */bin
 /obj
+/adn
 
 # sqlite dbs
 *.db
