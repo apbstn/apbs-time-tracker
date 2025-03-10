@@ -10,6 +10,7 @@ import Toast from 'primevue/toast'; // Import Toast component
 
 import "/src/assets/styles.scss";
 import "/src/assets/tailwind.css";
+import Tooltip from 'primevue/tooltip'; 
 
 const app = createApp(App);
 
@@ -47,5 +48,11 @@ app.use(PrimeVue, {
 // Register ToastService and Toast component globally
 app.use(ToastService);
 app.component('Toast', Toast);
+// Import Tooltip Directive
+
+
+app.use(PrimeVue);
+app.directive('tooltip', Tooltip); // Register Tooltip globally
+
 
 app.mount('#app');

@@ -6,6 +6,7 @@
       <button @click="pauseTracking">Pause</button>
       <button @click="stopTracking">Stop</button>
     </div>
+    <p v-if="statusMessage" class="status">{{ statusMessage }}</p>
   </div>
 </template>
 
@@ -16,25 +17,26 @@ export default {
   data() {
     return {
       currentStatus: "",
+      statusMessage: "",
+      // Optionally, if you want to store the user ID (set it during login)
+      userId: localStorage.getItem("userId") || "UnknownUser",
     };
   },
   methods: {
     async startTracking() {
       console.log("Start button clicked");
 
-      // ✅ Always fetch the latest token
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        alert("You're not authenticated. Please log in again.");
+        this.statusMessage = "You're not authenticated. Please log in again.";
         return;
       }
-
       console.log("Stored Token:", token);
 
       const idInput = prompt("Enter the ID (number):");
       const id = idInput ? parseInt(idInput, 10) : null;
       if (id === null || isNaN(id)) {
-        alert("Invalid ID. Please enter a valid number.");
+        this.statusMessage = "Invalid ID. Please enter a valid number.";
         return;
       }
 
@@ -43,8 +45,16 @@ export default {
           headers: { Authorization: `Bearer ${token}` }
         });
         this.currentStatus = "started";
+        this.statusMessage = "Timer started successfully!";
+
+        // Call the global notification function if available
+        if (window.addNotification) {
+          const username = localStorage.getItem("username") || "User";
+          window.addNotification(`${id} - ${username} just started the timer`);
+        }
       } catch (error) {
         console.error("Error starting tracking:", error.response?.data || error.message);
+        this.statusMessage = "Error starting timer.";
       }
     },
 
@@ -52,22 +62,21 @@ export default {
       console.log("Pause button clicked");
 
       if (this.currentStatus !== "started") {
-        alert("You can only pause after starting.");
+        this.statusMessage = "You can only pause after starting.";
         return;
       }
 
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        alert("You're not authenticated. Please log in again.");
+        this.statusMessage = "You're not authenticated. Please log in again.";
         return;
       }
-
       console.log("Stored Token:", token);
 
       const idInput = prompt("Enter the ID (number):");
       const id = idInput ? parseInt(idInput, 10) : null;
       if (id === null || isNaN(id)) {
-        alert("Invalid ID. Please enter a valid number.");
+        this.statusMessage = "Invalid ID. Please enter a valid number.";
         return;
       }
 
@@ -76,8 +85,15 @@ export default {
           headers: { Authorization: `Bearer ${token}` }
         });
         this.currentStatus = "paused";
+        this.statusMessage = "Timer paused successfully!";
+
+        if (window.addNotification) {
+          const username = localStorage.getItem("username") || "User";
+          window.addNotification(`${id} - ${username} just paused the timer`);
+        }
       } catch (error) {
         console.error("Error pausing tracking:", error.response?.data || error.message);
+        this.statusMessage = "Error pausing timer.";
       }
     },
 
@@ -85,22 +101,21 @@ export default {
       console.log("Stop button clicked");
 
       if (this.currentStatus !== "started" && this.currentStatus !== "paused") {
-        alert("You can only stop after starting or pausing.");
+        this.statusMessage = "You can only stop after starting or pausing.";
         return;
       }
 
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        alert("You're not authenticated. Please log in again.");
+        this.statusMessage = "You're not authenticated. Please log in again.";
         return;
       }
-
       console.log("Stored Token:", token);
 
       const idInput = prompt("Enter the ID (number):");
       const id = idInput ? parseInt(idInput, 10) : null;
       if (id === null || isNaN(id)) {
-        alert("Invalid ID. Please enter a valid number.");
+        this.statusMessage = "Invalid ID. Please enter a valid number.";
         return;
       }
 
@@ -109,8 +124,15 @@ export default {
           headers: { Authorization: `Bearer ${token}` }
         });
         this.currentStatus = "stopped";
+        this.statusMessage = "Timer stopped successfully!";
+
+        if (window.addNotification) {
+          const username = localStorage.getItem("username") || "User";
+          window.addNotification(`${id} - ${username} just stopped the timer`);
+        }
       } catch (error) {
         console.error("Error stopping tracking:", error.response?.data || error.message);
+        this.statusMessage = "Error stopping timer.";
       }
     }
   }
@@ -144,5 +166,11 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+.status {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
 }
 </style>
